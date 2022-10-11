@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import ddsutil.DDSUtil;
 import IRObjects.Coa;
 import IRObjects.CoaEmblem;
+import IRObjects.CoaTexturedEmblem;
 
 
 public class ImperatorFlagPainter {
@@ -204,25 +205,30 @@ public class ImperatorFlagPainter {
 				BufferedImage textureColor3 = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
 				BufferedImage textureShadingDark = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
 				BufferedImage textureShadingLight = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
-				
-				for (int x = 0; x < emblemWidth; x++) {
-					for (int y = 0; y < emblemHeight; y++) {
-						Color textureColour = new Color(texture.getRGB(x, y));
-
-						textureColor1.setRGB(x, y, applyMaskPixel(emblem.colors[0], 255).getRGB());
-						textureColor2.setRGB(x, y, applyMaskPixel(emblem.colors[1], textureColour.getGreen()).getRGB());
-						textureColor3.setRGB(x, y, applyMaskPixel(emblem.colors[2], textureColour.getRed()).getRGB());
-
-						int darkShadingA = 255 - Math.min(textureColour.getBlue() * 2, 255);
-						textureShadingDark.setRGB(x, y, new Color(0, 0, 0, darkShadingA).getRGB());
-
-						int lightShadingA = (int)Math.round(Math.max(Math.min((textureColour.getBlue() - 127) * 2, 255), 0));
-						textureShadingLight.setRGB(x, y, new Color(255, 255, 255, lightShadingA).getRGB());
-					}
+				BufferedImage emblemImage;
+				if(emblem instanceof CoaTexturedEmblem) {
+					emblemImage = texture;
 				}
-				ImageIO.write(textureShadingLight, "png", new File("embleamTextureShadingLight.png"));
+				else {
+					for (int x = 0; x < emblemWidth; x++) {
+						for (int y = 0; y < emblemHeight; y++) {
+							Color textureColour = new Color(texture.getRGB(x, y));
 
-				BufferedImage emblemImage = overlay(overlay(overlay(overlay(textureColor1, textureColor2), textureColor3), textureShadingDark), textureShadingLight);
+							textureColor1.setRGB(x, y, applyMaskPixel(emblem.colors[0], 255).getRGB());
+							textureColor2.setRGB(x, y, applyMaskPixel(emblem.colors[1], textureColour.getGreen()).getRGB());
+							textureColor3.setRGB(x, y, applyMaskPixel(emblem.colors[2], textureColour.getRed()).getRGB());
+
+							int darkShadingA = 255 - Math.min(textureColour.getBlue() * 2, 255);
+							textureShadingDark.setRGB(x, y, new Color(0, 0, 0, darkShadingA).getRGB());
+
+							int lightShadingA = (int)Math.round(Math.max(Math.min((textureColour.getBlue() - 127) * 2, 255), 0));
+							textureShadingLight.setRGB(x, y, new Color(255, 255, 255, lightShadingA).getRGB());
+						}
+					}
+					ImageIO.write(textureShadingLight, "png", new File("embleamTextureShadingLight.png"));
+
+					emblemImage = overlay(overlay(overlay(overlay(textureColor1, textureColor2), textureColor3), textureShadingDark), textureShadingLight);
+				}
 				
 				// Apply alpha to combined emblem
 				for (int x = 0; x < emblemWidth; x++) {

@@ -2364,6 +2364,91 @@ public class ImperatorParser {
 							);
 						}
 					}
+					else if (token.equals("textured_emblem")) {
+						Utils.readNextToken(inCoaFile);
+						Utils.readNextToken(inCoaFile);
+
+						String texture = null;
+						boolean[] mask = {true, true, true};
+						List<CoaEmblemInstance> instances = new ArrayList<CoaEmblemInstance>();
+						while(inCoaFile.ready()) {
+							token = Utils.readNextToken(inCoaFile);
+							if (token.equals("texture")) {
+								Utils.readNextToken(inCoaFile);
+								texture = Utils.readNextToken(inCoaFile);
+							}
+							else if (token.equals("instance")) {
+								Utils.readNextToken(inCoaFile);
+								Utils.readNextToken(inCoaFile);
+
+								double rotation = 0;
+								Point2D.Double scale = new Point2D.Double(1, 1);
+								Point2D.Double position = new Point2D.Double(0.5, 0.5);
+
+								while(inCoaFile.ready()) {
+									token = Utils.readNextToken(inCoaFile);
+									if (token.equals("rotation")) {
+										Utils.readNextToken(inCoaFile);
+										rotation = Double.parseDouble(Utils.readNextToken(inCoaFile));
+									}
+									else if (token.equals("scale")) {
+										Utils.readNextToken(inCoaFile);
+										Utils.readNextToken(inCoaFile);
+										scale.x = Double.parseDouble(Utils.readNextToken(inCoaFile));
+										scale.y = Double.parseDouble(Utils.readNextToken(inCoaFile));
+										Utils.readNextToken(inCoaFile);
+									}
+									else if (token.equals("position")) {
+										Utils.readNextToken(inCoaFile);
+										Utils.readNextToken(inCoaFile);
+										position.x = Double.parseDouble(Utils.readNextToken(inCoaFile));
+										position.y = Double.parseDouble(Utils.readNextToken(inCoaFile));
+										Utils.readNextToken(inCoaFile);
+									}
+									else if (token.equals("}")) {
+										break;
+									}
+									else {
+										System.err.println("Unknown CoA token: " + token);
+										assert false;
+									}
+								}
+
+								instances.add(new CoaEmblemInstance(rotation, scale, position));
+							}
+							else if (token.equals("}")) {
+								break;
+							}
+							else {
+								System.err.println("Unknown CoA token: " + token);
+								assert false;
+							}
+						}
+
+						if (instances.size() > 0) {
+							for (CoaEmblemInstance instance: instances) {
+								emblems.add(
+									new CoaTexturedEmblem(
+										texture,
+										instance.rotation,
+										instance.scale,
+										instance.position
+									)
+								);
+							}
+						}
+						// Default emblem if no instances are explicitly stated
+						else {
+							emblems.add(
+								new CoaTexturedEmblem(
+									texture,
+									0,
+									new Point2D.Double(1, 1),
+									new Point2D.Double(0.5, 0.5)
+								)
+							);
+						}
+					}
 					// has to be after color_emblem because of the startsWith
 					else if (token.startsWith("color")) {
 						int colorIndex = Integer.parseInt(token.substring(5, 6)) - 1;
