@@ -1959,6 +1959,9 @@ public class ImperatorParser {
 								else if (colourType.equals("hsv")) {
 									colour = Color.getHSBColor(colour0, colour1, colour2);
 								}
+								else if (colourType.equals("hsv360")) {
+									colour = Color.getHSBColor(colour0 / 360, colour1 / 100, colour2 / 100);
+								}
 								else {
 									System.err.println("Unknown colour type " + colourType + " in file " + file);									
 								}
