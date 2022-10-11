@@ -59,6 +59,8 @@ public class ImperatorParser {
 	public static final String PROVINCE_DEFINITION_PATH = Utils.IMPERATOR_PATH + "/map_data/definition.csv";
 	public static final String COUNTRY_DEFINITION_PATH = Utils.IMPERATOR_PATH + "/setup/countries/countries.txt";
 	
+	public static final int FLAG_MAX_COLORS = 5;
+
 	public static Hashtable<String, String> localisation;
 
 	private List<CultureGroup> cultureGroups = new ArrayList<CultureGroup>();
@@ -2210,8 +2212,7 @@ public class ImperatorParser {
 				
 				// Read coa parameters
 				String pattern = null;
-				String color1 = null;
-				String color2 = null;
+				String[] colors = new String[FLAG_MAX_COLORS];
 				List<CoaEmblem> emblems = new ArrayList<CoaEmblem>();
 				while(inCoaFile.ready()) {					
 					token = Utils.readNextToken(inCoaFile);
@@ -2219,26 +2220,12 @@ public class ImperatorParser {
 						Utils.readNextToken(inCoaFile);
 						pattern = Utils.readNextToken(inCoaFile);
 					}
-					else if (token.equals("color1")) {
-						Utils.readNextToken(inCoaFile);
-						color1 = Utils.readNextToken(inCoaFile);
-					}
-					else if (token.equals("color2")) {
-						Utils.readNextToken(inCoaFile);
-						color2 = Utils.readNextToken(inCoaFile);
-					}
-					else if (token.equals("color3")) {
-						// Skip this
-						Utils.readNextToken(inCoaFile);
-						Utils.readNextToken(inCoaFile);
-					}
 					else if (token.equals("colored_emblem")) {
 						Utils.readNextToken(inCoaFile);
 						Utils.readNextToken(inCoaFile);
 
 						String texture = null;
-						String emblemColor1Name = null;
-						String emblemColor2Name = null;
+						String[] emblemColorNames = new String[FLAG_MAX_COLORS];
 						boolean[] mask = {true, true, true};
 						List<CoaEmblemInstance> instances = new ArrayList<CoaEmblemInstance>();
 						while(inCoaFile.ready()) {
@@ -2247,13 +2234,10 @@ public class ImperatorParser {
 								Utils.readNextToken(inCoaFile);
 								texture = Utils.readNextToken(inCoaFile);
 							}
-							else if (token.equals("color1")) {
+							else if (token.startsWith("color")) {
+								int colorIndex = Integer.parseInt(token.substring(5, 6)) - 1;
 								Utils.readNextToken(inCoaFile);
-								emblemColor1Name = Utils.readNextToken(inCoaFile);
-							}
-							else if (token.equals("color2")) {
-								Utils.readNextToken(inCoaFile);
-								emblemColor2Name = Utils.readNextToken(inCoaFile);
+								emblemColorNames[colorIndex] = Utils.readNextToken(inCoaFile);
 							}
 							else if (token.equals("mask")) {
 								Utils.readNextToken(inCoaFile);
@@ -2333,11 +2317,20 @@ public class ImperatorParser {
 								assert false;
 							}
 						}
-						
-						Color emblemColor1 = namedColours.get(emblemColor1Name);
-						Color emblemColor2 = Color.BLACK;
-						if (emblemColor2Name != null) {
-							emblemColor2 = namedColours.get(emblemColor2Name);
+						Color[] emblemColors = new Color[FLAG_MAX_COLORS];
+						for (int i = 0; i < FLAG_MAX_COLORS; i++) {
+							if (emblemColorNames[i] != null) {
+								// the color can be a reference to a color from the main section.
+								// we assume that it has already been parsed at this point
+								if (emblemColorNames[i].startsWith("color")) {
+									int mainColorIndex = Integer.parseInt(emblemColorNames[i].substring(5, 6)) - 1;
+									emblemColorNames[i] = colors[mainColorIndex];
+								}
+								emblemColors[i] = namedColours.get(emblemColorNames[i]);
+							}
+							else {
+								emblemColors[i] = Color.BLACK;
+							}
 						}
 						
 						if (instances.size() > 0) {
@@ -2345,8 +2338,7 @@ public class ImperatorParser {
 								emblems.add(
 									new CoaEmblem(
 										texture,
-										emblemColor1,
-										emblemColor2,
+										emblemColors,
 										instance.rotation,
 										instance.scale,
 										instance.position,
@@ -2360,8 +2352,7 @@ public class ImperatorParser {
 							emblems.add(
 								new CoaEmblem(
 									texture,
-									emblemColor1,
-									emblemColor2,
+									emblemColors,
 									0,
 									new Point2D.Double(1, 1),
 									new Point2D.Double(0.5, 0.5),
@@ -2369,6 +2360,12 @@ public class ImperatorParser {
 								)
 							);
 						}
+					}
+					// has to be after color_emblem because of the startsWith
+					else if (token.startsWith("color")) {
+						int colorIndex = Integer.parseInt(token.substring(5, 6)) - 1;
+						Utils.readNextToken(inCoaFile);
+						colors[colorIndex] = Utils.readNextToken(inCoaFile);
 					}
 					else if (token.equals("}")) {
 						break;
@@ -2380,9 +2377,14 @@ public class ImperatorParser {
 				}
 				Coa newCoa = new Coa(coaKey);
 				newCoa.pattern = pattern;
-				newCoa.color1 = namedColours.get(color1);
-				if (color2 != null) {
-					newCoa.color2 = namedColours.get(color2);
+				newCoa.colors = new Color[FLAG_MAX_COLORS];
+				for (int i = 0; i < FLAG_MAX_COLORS; i++) {
+					if (colors[i] != null) {
+						newCoa.colors[i] = namedColours.get(colors[i]);
+					}
+					else {
+						newCoa.colors[i] = Color.BLACK;
+					}
 				}
 				newCoa.emblems = emblems;
 				coas.add(newCoa);

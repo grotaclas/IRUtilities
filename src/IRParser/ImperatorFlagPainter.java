@@ -178,18 +178,20 @@ public class ImperatorFlagPainter {
 			int height = pattern.getHeight();
 			BufferedImage patternColor1 = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 			BufferedImage patternColor2 = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+			BufferedImage patternColor3 = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 			
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					Color patternColour = new Color(pattern.getRGB(x, y));
 					
-					patternColor1.setRGB(x, y, applyMaskPixel(coa.color1, patternColour.getRed()).getRGB());
-					patternColor2.setRGB(x, y, applyMaskPixel(coa.color2, patternColour.getGreen()).getRGB());
+					patternColor1.setRGB(x, y, applyMaskPixel(coa.colors[0], patternColour.getRed()).getRGB());
+					patternColor2.setRGB(x, y, applyMaskPixel(coa.colors[1], patternColour.getGreen()).getRGB());
+					patternColor3.setRGB(x, y, applyMaskPixel(coa.colors[2], patternColour.getBlue()).getRGB());
 				}
 			}
 
 			BufferedImage scaledPattern = scaleImage(pattern, FLAG_WIDTH, FLAG_HEIGHT);
-			BufferedImage flag = scaleImage(overlay(patternColor1, patternColor2), FLAG_WIDTH, FLAG_HEIGHT);
+			BufferedImage flag = scaleImage(overlay(overlay(patternColor1, patternColor2), patternColor3), FLAG_WIDTH, FLAG_HEIGHT);
 			
 			// Handle each emblem
 			for (CoaEmblem emblem: coa.emblems) {
@@ -199,26 +201,28 @@ public class ImperatorFlagPainter {
 				int emblemHeight = texture.getHeight();
 				BufferedImage textureColor1 = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
 				BufferedImage textureColor2 = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
+				BufferedImage textureColor3 = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
 				BufferedImage textureShadingDark = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
 				BufferedImage textureShadingLight = new BufferedImage(emblemWidth, emblemHeight, BufferedImage.TYPE_4BYTE_ABGR);
 				
 				for (int x = 0; x < emblemWidth; x++) {
 					for (int y = 0; y < emblemHeight; y++) {
 						Color textureColour = new Color(texture.getRGB(x, y));
-						
-						textureColor1.setRGB(x, y, applyMaskPixel(emblem.color1, 255).getRGB());
-						textureColor2.setRGB(x, y, applyMaskPixel(emblem.color2, textureColour.getGreen()).getRGB());
-						
+
+						textureColor1.setRGB(x, y, applyMaskPixel(emblem.colors[0], 255).getRGB());
+						textureColor2.setRGB(x, y, applyMaskPixel(emblem.colors[1], textureColour.getGreen()).getRGB());
+						textureColor3.setRGB(x, y, applyMaskPixel(emblem.colors[2], textureColour.getRed()).getRGB());
+
 						int darkShadingA = 255 - Math.min(textureColour.getBlue() * 2, 255);
 						textureShadingDark.setRGB(x, y, new Color(0, 0, 0, darkShadingA).getRGB());
-						
+
 						int lightShadingA = (int)Math.round(Math.max(Math.min((textureColour.getBlue() - 127) * 2, 255), 0));
 						textureShadingLight.setRGB(x, y, new Color(255, 255, 255, lightShadingA).getRGB());
 					}
 				}
 				ImageIO.write(textureShadingLight, "png", new File("embleamTextureShadingLight.png"));
-				
-				BufferedImage emblemImage = overlay(overlay(overlay(textureColor1, textureColor2), textureShadingDark), textureShadingLight);
+
+				BufferedImage emblemImage = overlay(overlay(overlay(overlay(textureColor1, textureColor2), textureColor3), textureShadingDark), textureShadingLight);
 				
 				// Apply alpha to combined emblem
 				for (int x = 0; x < emblemWidth; x++) {

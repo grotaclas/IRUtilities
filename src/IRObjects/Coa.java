@@ -8,8 +8,7 @@ import IRParser.ImperatorParser;
 
 public class Coa extends ImpObject {
 	public String pattern;
-	public Color color1 = Color.BLACK;
-	public Color color2 = Color.BLACK;
+	public Color[] colors;
 	public List<CoaEmblem> emblems;
 	
 	public Coa(String key) {
