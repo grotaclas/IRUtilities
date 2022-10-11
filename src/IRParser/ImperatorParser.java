@@ -2199,7 +2199,7 @@ public class ImperatorParser {
 		
 		BufferedReader inCoaFile;
 		try {
-			inCoaFile = new BufferedReader(new FileReader("coas.txt"));
+			inCoaFile = new BufferedReader(new FileReader(coaFile));
 			
 			while(inCoaFile.ready()) {
 				// Enter into coa block
