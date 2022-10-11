@@ -278,7 +278,8 @@ public class ImperatorFlagPainter {
 	public static void main(String[] args) {
 		ImperatorParser newParser = new ImperatorParser();
 		System.out.println("Parsing...");
-		newParser.parse();
+		newParser.parseLocalisation();
+		newParser.parseNamedColours();
 		System.out.println("Parsing done!");
 		//newParser.writeTerritoryTables();
 		//newParser.printCultureTable();

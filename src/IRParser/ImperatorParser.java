@@ -89,7 +89,7 @@ public class ImperatorParser {
 	
 	public void parse() {
 		// Read in localisations
-		localisation = Utils.readLocalisationFolder(LOC_FOLDER_NAME);
+		parseLocalisation();
 
 		// Read levy type files
 		final File levyTemplatesFolder = new File(LEVY_TEMPLATES_PATH);
@@ -1894,6 +1894,19 @@ public class ImperatorParser {
 		}
 		
 		// Read named colours
+		parseNamedColours();
+
+		// Make sure all error messages have been output
+		System.err.flush();
+		try {
+			TimeUnit.MILLISECONDS.sleep(200);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void parseNamedColours() {
 		File namedColoursFolder = new File(NAMED_COLOURS_PATH);
 
 		try (Stream<Path> walk = Files.walk(Paths.get(NAMED_COLOURS_PATH))) {
@@ -1964,15 +1977,10 @@ public class ImperatorParser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// Make sure all error messages have been output
-		System.err.flush();
-		try {
-			TimeUnit.MILLISECONDS.sleep(200);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	}
+
+	public void parseLocalisation() {
+		localisation = Utils.readLocalisationFolder(LOC_FOLDER_NAME);
 	}
 	
 	public void writeRegionTables(String region, FileWriter writer) throws IOException {
