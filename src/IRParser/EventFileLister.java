@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public class EventFileLister {
 
 	public static void main(String[] args) {
-		String pathname = Utils.IMPERATOR_PATH + "\\events\\great_work_events";
+		String pathname = Utils.IMPERATOR_PATH + "/events/great_work_events";
 		String[] removeStart = {"rel", "dhe", "me", "greek"};
 		List<String> removeStartList = Arrays.asList(removeStart);
 		String ending = "events";

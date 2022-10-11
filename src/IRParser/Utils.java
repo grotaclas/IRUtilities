@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public class Utils {
 	
-	public static final String IMPERATOR_PATH = "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\ImperatorRome\\game\\";
+	public static final String IMPERATOR_PATH = "C:/Program Files (x86)/Steam/SteamApps/common/ImperatorRome/game/";
 	
 	public static String readNextLine(BufferedReader inFile) {
 		return readNextLine(inFile, true);

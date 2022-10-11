@@ -17,8 +17,8 @@ import IRObjects.CoaEmblem;
 
 public class ImperatorFlagPainter {
 
-	public static final String PATTERNS_PATH = Utils.IMPERATOR_PATH + "gfx\\coat_of_arms\\patterns";
-	public static final String TEXTURES_PATH = Utils.IMPERATOR_PATH + "gfx\\coat_of_arms\\colored_emblems";
+	public static final String PATTERNS_PATH = Utils.IMPERATOR_PATH + "gfx/coat_of_arms/patterns";
+	public static final String TEXTURES_PATH = Utils.IMPERATOR_PATH + "gfx/coat_of_arms/colored_emblems";
 	
 	public static final int FLAG_WIDTH = 256;
 	public static final int FLAG_HEIGHT = 256;
@@ -173,7 +173,7 @@ public class ImperatorFlagPainter {
 	public void drawFlag(Coa coa) {
 		try {
 			// Handle pattern
-			BufferedImage pattern = readImageFile(PATTERNS_PATH + "\\" + coa.pattern);
+			BufferedImage pattern = readImageFile(PATTERNS_PATH + "/" + coa.pattern);
 			int width = pattern.getWidth();
 			int height = pattern.getHeight();
 			BufferedImage patternColor1 = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
@@ -193,7 +193,7 @@ public class ImperatorFlagPainter {
 			
 			// Handle each emblem
 			for (CoaEmblem emblem: coa.emblems) {
-				BufferedImage texture = readImageFile(TEXTURES_PATH + "\\" + emblem.pattern);
+				BufferedImage texture = readImageFile(TEXTURES_PATH + "/" + emblem.pattern);
 				ImageIO.write(texture, "png", new File("texture.png"));
 				int emblemWidth = texture.getWidth();
 				int emblemHeight = texture.getHeight();
@@ -262,10 +262,10 @@ public class ImperatorFlagPainter {
 			String countryName = ImperatorParser.localisation.get(coa.key);
 			String flagName = "";
 			if (countryName != null) {
-				flagName = "flags\\" + countryName + ".png";
+				flagName = "flags/" + countryName + ".png";
 			}
 			else {
-				flagName = "flags\\" + coa.key + ".png";				
+				flagName = "flags/" + coa.key + ".png";				
 			}
 			ImageIO.write(flag, "png", new File(flagName));
 			System.out.println(flagName + " drawn");

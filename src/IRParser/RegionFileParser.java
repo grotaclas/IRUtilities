@@ -31,9 +31,9 @@ public class RegionFileParser {
 	}
 	
 	public void parseRegions() {
-		String regionFileName = "map_data\\regions.txt";
-		String regionLocFileName = "localization\\english\\macroregions_l_english.yml";
-		String provinceLocFileName = "localization\\english\\regionnames_l_english.yml";
+		String regionFileName = "map_data/regions.txt";
+		String regionLocFileName = "localization/english/macroregions_l_english.yml";
+		String provinceLocFileName = "localization/english/regionnames_l_english.yml";
 		
 		File regionFile = new File(Utils.IMPERATOR_PATH + regionFileName);
 

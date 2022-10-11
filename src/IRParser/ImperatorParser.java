@@ -35,29 +35,29 @@ public class ImperatorParser {
 	
 	// Temporary for storing data until we read the countries
 
-	public static final String LOC_FOLDER_NAME = Utils.IMPERATOR_PATH + "localization\\english";
+	public static final String LOC_FOLDER_NAME = Utils.IMPERATOR_PATH + "localization/english";
 	
-	public static final String CULTURE_PATH = Utils.IMPERATOR_PATH + "\\common\\cultures";
-	public static final String RELIGION_PATH = Utils.IMPERATOR_PATH + "\\common\\religions";
-	public static final String MIL_TRAD_PATH = Utils.IMPERATOR_PATH + "\\common\\military_traditions";
-	public static final String GOVERNMENT_PATH = Utils.IMPERATOR_PATH + "\\common\\governments";
-	public static final String SUBJECT_TYPES_PATH = Utils.IMPERATOR_PATH + "\\common\\subject_types";
-	public static final String DEITIES_PATH = Utils.IMPERATOR_PATH + "\\common\\deities";
-	public static final String MODIFIERS_PATH = Utils.IMPERATOR_PATH + "\\common\\modifiers";
-	public static final String MODIFIER_ICONS_PATH = Utils.IMPERATOR_PATH + "\\common\\modifier_icons";
-	public static final String PROVINCE_NAMES_PATH = Utils.IMPERATOR_PATH + "\\common\\province_names";
-	public static final String TERRITORY_SETUP_PATH = Utils.IMPERATOR_PATH + "\\setup\\provinces";
-	public static final String MAIN_SETUP_PATH = Utils.IMPERATOR_PATH + "\\setup\\main";
-	public static final String REGION_PATH = Utils.IMPERATOR_PATH + "map_data\\regions.txt";
-	public static final String PROVINCE_PATH = Utils.IMPERATOR_PATH + "map_data\\areas.txt";
-	public static final String DEFAULT_MAP_PATH = Utils.IMPERATOR_PATH + "map_data\\default.map";
-	public static final String LEVY_TEMPLATES_PATH = Utils.IMPERATOR_PATH + "\\common\\levy_templates";
-	public static final String NAMED_COLOURS_PATH = Utils.IMPERATOR_PATH + "\\common\\named_colors";
-	public static final String SCRIPT_VALUES_PATH = Utils.IMPERATOR_PATH + "\\common\\script_values";
+	public static final String CULTURE_PATH = Utils.IMPERATOR_PATH + "/common/cultures";
+	public static final String RELIGION_PATH = Utils.IMPERATOR_PATH + "/common/religions";
+	public static final String MIL_TRAD_PATH = Utils.IMPERATOR_PATH + "/common/military_traditions";
+	public static final String GOVERNMENT_PATH = Utils.IMPERATOR_PATH + "/common/governments";
+	public static final String SUBJECT_TYPES_PATH = Utils.IMPERATOR_PATH + "/common/subject_types";
+	public static final String DEITIES_PATH = Utils.IMPERATOR_PATH + "/common/deities";
+	public static final String MODIFIERS_PATH = Utils.IMPERATOR_PATH + "/common/modifiers";
+	public static final String MODIFIER_ICONS_PATH = Utils.IMPERATOR_PATH + "/common/modifier_icons";
+	public static final String PROVINCE_NAMES_PATH = Utils.IMPERATOR_PATH + "/common/province_names";
+	public static final String TERRITORY_SETUP_PATH = Utils.IMPERATOR_PATH + "/setup/provinces";
+	public static final String MAIN_SETUP_PATH = Utils.IMPERATOR_PATH + "/setup/main";
+	public static final String REGION_PATH = Utils.IMPERATOR_PATH + "map_data/regions.txt";
+	public static final String PROVINCE_PATH = Utils.IMPERATOR_PATH + "map_data/areas.txt";
+	public static final String DEFAULT_MAP_PATH = Utils.IMPERATOR_PATH + "map_data/default.map";
+	public static final String LEVY_TEMPLATES_PATH = Utils.IMPERATOR_PATH + "/common/levy_templates";
+	public static final String NAMED_COLOURS_PATH = Utils.IMPERATOR_PATH + "/common/named_colors";
+	public static final String SCRIPT_VALUES_PATH = Utils.IMPERATOR_PATH + "/common/script_values";
 	
-	public static final String PROVINCE_MAP_PATH = Utils.IMPERATOR_PATH + "\\map_data\\provinces.png";
-	public static final String PROVINCE_DEFINITION_PATH = Utils.IMPERATOR_PATH + "\\map_data\\definition.csv";
-	public static final String COUNTRY_DEFINITION_PATH = Utils.IMPERATOR_PATH + "\\setup\\countries\\countries.txt";
+	public static final String PROVINCE_MAP_PATH = Utils.IMPERATOR_PATH + "/map_data/provinces.png";
+	public static final String PROVINCE_DEFINITION_PATH = Utils.IMPERATOR_PATH + "/map_data/definition.csv";
+	public static final String COUNTRY_DEFINITION_PATH = Utils.IMPERATOR_PATH + "/setup/countries/countries.txt";
 	
 	public static Hashtable<String, String> localisation;
 
